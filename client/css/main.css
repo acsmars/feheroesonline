@@ -1,0 +1,42 @@
+
+/* GUI Alignment */
+
+/* Map */
+.mapDisplay {
+	width: 540px;
+	height: 720px;
+	background-color: black;
+}
+
+.mapDisplay > div { /* Layer Styles*/
+	position: absolute;
+	width: 540px;
+	height: 720px;
+}
+
+.mapBackground {
+	
+}
+
+.mapForeground {
+
+}
+
+.grid {
+
+}
+
+.tile {
+	width: 90px;
+	height: 90px;
+	position: absolute;
+}
+
+.tile > div {
+	width: inherit;
+	height: inherit;
+	position: inherit;
+}
+
+/* Fonts */
+
