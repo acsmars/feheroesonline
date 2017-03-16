@@ -1,0 +1,182 @@
+{
+	"Armorslayer+": {
+		"might": 12,
+		"range": 1,
+		"color": "red",
+		"type": "Sword",
+		"effective": "Armor"
+	},
+	"Binding Blade": {
+		"might": 16,
+		"range": 1,
+		"color": "red",
+		"type": "Sword",
+		"special": "Binding Blade"
+	},
+	"Brave Sword+": {
+		"might": 8,
+		"range": 1,
+		"color": "red",
+		"type": "Sword",
+		"special": "Brave"
+	},
+	"Durandal": {
+		"might": 16,
+		"range": 1,
+		"color": "red",
+		"type": "Sword",
+		"special": "Durandal"
+	},
+	"Falchion": {
+		"might": 16,
+		"range": 1,
+		"color": "red",
+		"type": "Sword",
+		"effective": "Dragon",
+		"special": "Falchion"
+	},
+	"Folkvangr": {
+		"might": 16,
+		"range": 1,
+		"color": "red",
+		"type": "Sword",
+		"special": "Folkvangr"
+	},
+	"Steel Sword": {
+		"might": 8,
+		"range": 1,
+		"color": "red",
+		"type": "Sword"
+	},
+	"Killing Edge+": {
+		"might": 11,
+		"range": 1,
+		"color": "red",
+		"type": "Sword",
+		"okugiSpeed": -1
+	},
+	"Mystletainn": {
+		"might": 16,
+		"range": 1,
+		"color": "red",
+		"type": "Sword",
+		"okugiSpeed": -1
+	},
+	"Ruby Sword+": {
+		"might": 12,
+		"range": 1,
+		"color": "red",
+		"type": "Sword",
+		"special": "Ruby"
+	},
+	"Sieglinde": {
+		"might": 16,
+		"range": 1,
+		"color": "red",
+		"type": "Sword",
+		"special": "Sieglinde"
+	},
+	"Silver Sword+": {
+		"might": 15,
+		"range": 1,
+		"color": "red",
+		"type": "Sword"
+	},
+	"Sol Katti": {
+		"might": 16,
+		"range": 1,
+		"color": "red",
+		"type": "Sword",
+		"special": "Sol Katti"
+	},
+	"Raijinto": {
+		"might": 16,
+		"range": 1,
+		"color": "red",
+		"type": "Sword",
+		"special": "Always Counterattack"
+	},
+	"Tyrfing": {
+		"might": 16,
+		"range": 1,
+		"color": "red",
+		"type": "Sword",
+		"special": "Tyrfing"
+	},
+	"Wo Dao+": {
+		"might": 13,
+		"range": 1,
+		"color": "red",
+		"type": "Sword",
+		"special": "Wo Dao"
+	},
+	"Yato": {
+		"might": 16,
+		"range": 1,
+		"color": "red",
+		"type": "Sword",
+		"special": "Yato"
+	},
+	"Bolganone+": {
+		"might": 13,
+		"range": 2,
+		"color": "red",
+		"type": "Tome"
+	},
+	"Brynhildr": {
+		"might": 14,
+		"range": 2,
+		"color": "red",
+		"type": "Tome",
+		"special": "Gravity"
+	},
+	"Cymbeline": {
+		"might": 14,
+		"range": 2,
+		"color": "red",
+		"type": "Tome",
+		"special": "Cymbeline"
+	},
+	"Fenrir+": {
+		"might": 13,
+		"range": 2,
+		"color": "red",
+		"type": "Tome"
+	},
+	"Rauorblade+": {
+		"might": 13,
+		"range": 2,
+		"color": "red",
+		"type": "Tome",
+		"special": "Rauorblade",
+		"okugiSpeed": 1
+	},
+	"Rauorraven+": {
+		"might": 11,
+		"range": 2,
+		"color": "red",
+		"type": "Tome",
+		"special": "Rauorraven"
+	},
+	"Rauorwolf+": {
+		"might": 10,
+		"range": 2,
+		"color": "red",
+		"type": "Tome",
+		"effective": "Cavalry"
+	},
+	"Flametongue+": {
+		"might": 15,
+		"range": 1,
+		"color": "red",
+		"type": "Breath"
+	},
+	"Lightning Breath+ (Red)": {
+		"might": 11,
+		"range": 1,
+		"color": "red",
+		"type": "Breath",
+		"special": "Always Counterattack"
+	}
+
+}
