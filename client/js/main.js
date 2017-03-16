@@ -6,11 +6,16 @@ function zfill(str, max) {
 }
 
 $( document ).ready(function() {
-	displayCreateGrid(6,8);
+	gameMap = gameLoadMap(localMap0201);
+	displayCreateGrid(gameMap.length,gameMap[0].length);
 	displayDrawMap();
+
 
 	// Event Listeners
 	$('.tile').click(function() {
 		displayTileClick($(this));
 	});
+
+	
+	
 });

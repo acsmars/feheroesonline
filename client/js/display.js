@@ -1,11 +1,11 @@
 var displayXMax, displayYMax;
 var displayOverlayOpacityLevel = 0.5; // Opacity alpha level of overlay layer. 1 => solid
 
-function displayCreateGrid(xMax,yMax) {
+function displayCreateGrid(yMax,xMax) {
 	// Create grid HTML elements in .grid
 	// Call on document ready in main.js
-	displayXMax = xMax;
 	displayYMax = yMax;
+	displayXMax = xMax;
 	for (var y = 0; y < yMax; y++) {
 		for (var x = 0; x < xMax; x++) {
 			$(".grid").append(
@@ -22,12 +22,12 @@ function displayCreateGrid(xMax,yMax) {
 function displayTileClick(tile) {
 	// Get tile and call game click function
 	var id = tile.attr('id');
-	coord = id.slice(4);
+	coord = id.slice(4); // x,y of tile by this id
 	x = parseInt(coord.slice(0,2));
 	y = parseInt(coord.slice(3,4));
 
-	// Toggle Sharena
-	// setCharacterByID(id,"assets/characters/sharena.png");
+	// Run game actions for this event
+	gameTileClick(x,y);
 }
 
 // Map Rendering Functions
@@ -38,7 +38,7 @@ function displayDrawMap() {
 	var imageUrl = "assets/backgrounds/Wavepattern.png";
 	$('.mapBackground').css('background-image', 'url(' + imageUrl + ')');
 
-	var imageUrl = "assets/maps/S0201.png";
+	var imageUrl = "assets/mapBackgrounds/S0201.png";
 	$('.mapForeground').css('background-image', 'url(' + imageUrl + ')');
 
 	imageUrl = "assets/characters/sharena.png";
