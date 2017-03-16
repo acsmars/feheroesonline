@@ -177,6 +177,34 @@
 		"color": "red",
 		"type": "Breath",
 		"special": "Always Counterattack"
+	},
+	"Armads+": {
+		"might": 16,
+		"range": 1,
+		"color": "green",
+		"type": "Axe",
+		"special": "Armads"
+	},
+	"Brave Axe+": {
+		"might": 8,
+		"range": 1,
+		"color": "green",
+		"type": "Axe",
+		"special": "Brave"
+	},
+	"Emerald Axe+": {
+		"might": 12,
+		"range": 1,
+		"color": "green",
+		"type": "Axe",
+		"special": "Emerald"
+	},
+	"Hammer+": {
+		"might": 12,
+		"range": 1,
+		"color": "green",
+		"type": "Axe",
+		"effective": "Armor"
 	}
 
 }

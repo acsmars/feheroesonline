@@ -256,6 +256,7 @@ function Controller(sender, server) {
 		this.activeTeam = 0;
 		this.teamCount = teams.length;
 		this.remainingTeams = teams;
+		this.clickType = "Select Unit";
 		actor.startTurn();
 	};
 	
@@ -288,84 +289,61 @@ function Controller(sender, server) {
 		this.initiateTurn(this.activeTeam);
 	};
 	
-	this.onClick = function myself(pos) {  //Only for Client
-		if (this.clickType === "Select Unit") {
-			//If nothing is selected, the only legal clicks are for selecting units
+	this.gameTileClick = function myself(pos) {
+	
+		var deselectUnit = function(pos) {
+			this.waiting = true;
+			this.lastClick = [];
+			this.attacking = false;
+			this.assisting = false;
+			myself(pos);
+		}
+		
+		if (this.waiting) {
+			//Needs to select action
 			this.selectedUnit = map.atPosition(pos);
 			this.moveSelectedTo = [];
 			if (this.selectedUnit !== -1) {
 				if (tactician.units[this.selectedUnit].team === this.activeTeam) {
-					this.clickType = "Select Movement";
+					this.waiting = false;
+					this.moveSelectedTo = tactician.units[this.selectedUnit].pos;
 				}
 			}
 			return;
 		}
-		else if (this.clickType === "Select Movement") {
-			if (movement.MovementData[this.selectedUnit]["CAN GO"].indexOf(pos) === -1) {
-				//If you click anywhere you can't go
-				this.clickType = "Select Unit";
-				//Then try clicking again so it can try to select the unit you clicked on
-				myself(pos);
+		else {
+			if (pos === this.lastClick) {
+				this.executeAction(this.selectedUnit, tactician.units[this.selectedUnit].pos, pos, this.attacking, this.defending);
 			}
-			else {
+			else if (movement.MovementData[this.selectedUnit]["CAN GO"].indexOf(pos) !== -1) {
 				this.moveSelectedTo = pos;
-				this.clickType = "Select Action";
+				this.lastClick = pos;
+				this.attacking = false;
+				this.assisting = false;
+				return;
 			}
-			return;
-		}
-		else if (this.clickType === "Select Action") {
-			if (Object.keys(movement.MovementData[this.selectedUnit]["CAN ASSIST"]).indexOf(pos) !== -1) {
+			else if (Object.keys(movement.MovementData[this.selectedUnit]["CAN ASSIST"]).indexOf(pos) !== -1) {
 				if (movement.MovementData[this.selectedUnit]["CAN ASSIST"][pos].indexOf(this.moveSelectedTo) !== -1) {
 					this.selectedTarget = map.atPosition(pos);
-					this.clickType = "Confirm Action";
+					this.lastClick = pos;
+					this.attacking = false;
+					this.assisting = true;
 					return;
 				}
 			}
-			if (Object.keys(movement.MovementData[this.selectedUnit]["CAN ATTACK"]).indexOf(pos) !== -1) {
+			else if (Object.keys(movement.MovementData[this.selectedUnit]["CAN ATTACK"]).indexOf(pos) !== -1) {
 				if (movement.MovementData[this.selectedUnit]["CAN ATTACK"][pos].indexOf(this.moveSelectedTo) !== -1) {
 					this.selectedTarget = map.atPosition(pos);
-					this.clickType = "Confirm Action";
+					this.lastClick = pos;
+					this.attacking = true;
+					this.assisting = false;
 					return;
 				}
 			}
-			else if (pos === this.moveSelectedTo) {
-				//Simply move the unit to the place selected in "Select Movement" phase
-				this.executeAction(this.selectedUnit, tactician.units[this.selectedUnit].pos, pos, false, false);
-				//Then tell the server to do the same thing
-				return;
-			}
-			if (movement.MovementData[this.selectedUnit]["CAN GO"].indexOf(pos) !== -1) {
-				//Change the place it is trying to move to
-				this.moveSelectedTo = pos;
-				return;
-			}
 			else {
-				//If you click anywhere else it just unselects the unit
-				this.clickType = "Select Unit";
-				//Then try clicking again so it can try to select the unit you clicked on
-				myself(pos);
+				deselectUnit(pos);
 			}
-		}
-		else if (this.clickType === "Confirm Action") {
-			if (this.selectedTarget === map.atPosition(pos)) {
-				this.executeAction(this.selectedUnit, tactician.units[this.selectedUnit].pos, pos, false, true);
-				//Then tell the server to do the same thing
-				return;
-			}
-			if (movement.MovementData[this.selectedUnit]["CAN GO"].indexOf(pos) !== -1) {
-				//Then undo the selecting of the target unit
-				this.clickType = "Select Action";
-				this.selectedTarget = -1;
-				this.moveSelectedTo = pos;
-				return;
-			}
-			else {
-				//If you click anywhere else it just unselects the unit
-				this.clickType = "Select Unit";
-				//Then try clicking again so it can try to select the unit you clicked on
-				myself(pos);
-				return;
-			}
+			return;
 		}
 		
 		this.draw(this.selectedUnit, this.selectedTarget);
@@ -1030,7 +1008,7 @@ function Combat() {
 	
 	this.fight = function(user, target) {
 		var hitsBack = false,
-		var attackerDoubles = false, defenderDoubles = false, attackerSnipes = false, defenderSnipes = false;
+		var attackerDoubles = false, defenderDoubles = false, attackerSnipes = false, defenderSnipes = false, attackerBraves = false;
 		var attackerbonuses = {
 			"atk": 0,
 			"def": 0,
@@ -1085,9 +1063,17 @@ function Combat() {
 			defenderSnipes = true;
 		}
 		
+		if (weapon.zettaiHangeki(target.weapon.special, target)) {
+			defenderDoubles = true;
+		}
+		
 		if (weapon.priorityAttacker(user.weapon.special, user)) {
 			attackerSnipes = true;
 			attackerDoubles = true;
+		}
+		
+		if (weapon.braveWeapon(user.weapon.special, user)) {
+			attackerBraves = true;
 		}
 		
 		if (passive.wary(target, user)) {
@@ -1113,14 +1099,23 @@ function Combat() {
 			priority.push(target);
 		}
 		priority.push(user);
+		if (attackerBraves) {
+			priority.push(user);
+		}
 		if ((attackerSnipes) && (attackerDoubles)) {
 			priority.push(user);
+			if (attackerBraves) {
+				priority.push(user);
+			}
 		}
 		if (!(defenderSnipes)) {
 			priority.push(target);
 		}
 		if ((attackerDoubles) && (!(attackerSnipes))) {
 			priority.push(user);
+			if (attackerBraves) {
+				priority.push(user);
+			}
 		}
 		if (defenderDoubles) {
 			priority.push(target);
@@ -1317,6 +1312,29 @@ function Weapon() {
 				break;
 			case "Brave": 
 				return true;
+				break;
+		}
+		return false;
+	};
+	
+	this.braveWeapon = function(special, unit) {
+		//Lets the attacker hit twice before defender hits back
+		switch (special) {
+			case "Brave": 
+				return true;
+				break;
+		}
+		return false;
+	};
+	
+	this.zettaiHangeki = function(special, unit) {
+		//Lets the defender double no matter what
+		var percentage = getHPPercentage(unit);
+		switch (special) {
+			case "Armads": 
+				if (percentage >= 0.8) {
+					return true;
+				}
 				break;
 		}
 		return false;
