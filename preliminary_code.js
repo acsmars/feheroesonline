@@ -762,26 +762,26 @@ function Map() {
 		for (var a in map.terrainData) {
 			row = [];
 			for (var b in a) {
-				var c = b;
+				var m = 0;
+				var terrain = b[0]; //First index is terrain type
+				var wallHP = b[1]; //Second index is wall health
 				if ((type === "Infantry") || (type === "Armor")) {
-					if (c > 2) {
-						c = 2;
+					if ((terrain === "Water") || (terrain === "Mountain")) {
+						m = 2;
+					}
+					if (terrain === "Forest") {
+						m = 1;
 					}
 				}
 				if (type === "Cavalry") {
-					if (c > 0) {
-						c = 2;
+					if ((terrain === "Water") || (terrain === "Mountain") || (terrain === "Forest")) {
+						m = 2;
 					}
 				}
-				if (type === "Pegasus") {
-					if (c < 3) {
-						c = 0;
-					}
-					else {
-						c = 2;
-					}
+				if (wallHP !== 0) {
+					m = 2;
 				}
-				row.push(c);
+				row.push(m);
 			}
 			out.push(row);
 		}
@@ -789,7 +789,7 @@ function Map() {
 	};
 	
 	this.loadMap = function(ind) {
-		this.terrainData = legalMaps[ind]; //Actually have to put "3" around each border of the map so that people can't walk off the map
+		this.terrainData = legalMaps[ind]; 
 		for (var a in Classes) {
 			this.Mobility[a] = getMobility(a); //loads where each class can and can't go on the map
 		}
