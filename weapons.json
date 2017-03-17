@@ -205,6 +205,324 @@
 		"color": "green",
 		"type": "Axe",
 		"effective": "Armor"
+	},
+	"Killer Axe+": {
+		"might": 11,
+		"range": 1,
+		"color": "green",
+		"type": "Axe",
+		"okugiSpeed": -1
+	},
+	"Noatun": {
+		"might": 16,
+		"range": 1,
+		"color": "green",
+		"type": "Axe",
+		"special": "Noatun"
+	},
+	"Silver Axe+": {
+		"might": 15,
+		"range": 1,
+		"color": "green",
+		"type": "Axe"
+	},
+	"Excalibur": {
+		"might": 14,
+		"range": 2,
+		"color": "green",
+		"type": "Tome",
+		"effective": "Pegasus"
+	},
+	"Gronnblade+": {
+		"might": 13,
+		"range": 2,
+		"color": "green",
+		"type": "Tome",
+		"special": "Gronnblade",
+		"okugiSpeed": 1
+	},
+	"Gronnraven+": {
+		"might": 11,
+		"range": 2,
+		"color": "green",
+		"type": "Tome",
+		"special": "Gronnraven"
+	},
+	"Gronnwolf+": {
+		"might": 10,
+		"range": 2,
+		"color": "green",
+		"type": "Tome",
+		"effective": "Cavalry"
+	},
+	"Naga": {
+		"might": 14,
+		"range": 2,
+		"color": "green",
+		"type": "Tome",
+		"special": "Naga",
+		"effective": "Dragon"
+	},
+	"Fire Breath+ (Green)": {
+		"might": 11,
+		"range": 1,
+		"color": "green",
+		"type": "Tome"
+	},
+	"Light Breath+ (Green)": {
+		"might": 13,
+		"range": 1,
+		"color": "green",
+		"type": "Tome",
+		"special": "Light Breath"
+	},
+	"Lightning Breath+ (Green)": {
+		"might": 11,
+		"range": 1,
+		"color": "green",
+		"type": "Breath",
+		"special": "Always Counterattack"
+	},
+	"Brave Lance+": {
+		"might": 8,
+		"range": 1,
+		"color": "blue",
+		"type": "Spear",
+		"special": "Brave"
+	},
+	"Fensalir": {
+		"might": 16,
+		"range": 1,
+		"color": "blue",
+		"type": "Spear",
+		"special": "Fensalir"
+	},
+	"Heavy Spear+": {
+		"might": 12,
+		"range": 1,
+		"color": "blue",
+		"type": "Spear",
+		"effective": "Armor"
+	},
+	"Killer Lance+": {
+		"might": 11,
+		"range": 1,
+		"color": "blue",
+		"type": "Spear",
+		"okugiSpeed": -1
+	},
+	"Sapphire Lance+": {
+		"might": 12,
+		"range": 1,
+		"color": "blue",
+		"type": "Spear",
+		"special": "Sapphire"
+	},
+	"Siegmund": {
+		"might": 16,
+		"range": 1,
+		"color": "blue",
+		"type": "Spear",
+		"special": "Siegmund"
+	},
+	"Silver Lance+": {
+		"might": 15,
+		"range": 1,
+		"color": "blue",
+		"type": "Spear"
+	},
+	"Aura": {
+		"might": 9,
+		"range": 2,
+		"color": "blue",
+		"type": "Tome",
+		"special": "Aura"
+	},
+	"Blarblade+": {
+		"might": 13,
+		"range": 2,
+		"color": "blue",
+		"type": "Tome",
+		"special": "Blarblade",
+		"okugiSpeed": 1
+	},
+	"Blarraven+": {
+		"might": 11,
+		"range": 2,
+		"color": "blue",
+		"type": "Tome",
+		"special": "Blarraven"
+	},
+	"Blarwolf+": {
+		"might": 10,
+		"range": 2,
+		"color": "blue",
+		"type": "Tome",
+		"effective": "Cavalry"
+	},
+	"Dire Thunder": {
+		"might": 9,
+		"range": 2,
+		"color": "blue",
+		"type": "Tome",
+		"effective": "Brave"
+	},
+	"Dark Breath+ (Blue)": {
+		"might": 13,
+		"range": 2,
+		"color": "blue",
+		"type": "Breath",
+		"effective": "Dark Breath"
+	},
+	"Fire Breath+ (Blue)": {
+		"might": 9,
+		"range": 2,
+		"color": "blue",
+		"type": "Breath"
+	},
+	"Light Breath+ (Blue)": {
+		"might": 13,
+		"range": 1,
+		"color": "blue",
+		"type": "Tome",
+		"special": "Light Breath"
+	},
+	"Lightning Breath+ (Blue)": {
+		"might": 11,
+		"range": 1,
+		"color": "blue",
+		"type": "Breath",
+		"special": "Always Counterattack"
+	},
+	"Absorb": {
+		"might": 4,
+		"range": 2,
+		"color": "grey",
+		"type": "Staff",
+		"special": "Absorb"
+	},
+	"Assault": {
+		"might": 10,
+		"range": 2,
+		"color": "grey",
+		"type": "Staff"
+	},
+	"Fear": {
+		"might": 5,
+		"range": 2,
+		"color": "grey",
+		"type": "Staff",
+		"special": "Fear"
+	},
+	"Gravity": {
+		"might": 6,
+		"range": 2,
+		"color": "grey",
+		"type": "Staff",
+		"special": "Gravity"
+	},
+	"Pain": {
+		"might": 3,
+		"range": 2,
+		"color": "grey",
+		"type": "Staff",
+		"special": "Pain"
+	},
+	"Panic": {
+		"might": 7,
+		"range": 2,
+		"color": "grey",
+		"type": "Staff",
+		"special": "Panic"
+	},
+	"Slow": {
+		"might": 5,
+		"range": 2,
+		"color": "grey",
+		"type": "Staff",
+		"special": "Slow"
+	},
+	"Assassin's Bow+": {
+		"might": 12,
+		"range": 2,
+		"color": "grey",
+		"type": "Bow",
+		"effective": "Pegasus",
+		"special": "Assassin's Bow"
+	},
+	"Brave Bow+": {
+		"might": 7,
+		"range": 2,
+		"color": "grey",
+		"type": "Bow",
+		"effective": "Pegasus",
+		"special": "Brave"
+	},
+	"Fujin Yumi": {
+		"might": 16,
+		"range": 2,
+		"color": "grey",
+		"type": "Bow",
+		"effective": "Pegasus",
+		"special": "Fujin Yumi"
+	},
+	"Killer Bow+": {
+		"might": 9,
+		"range": 2,
+		"color": "grey",
+		"type": "Bow",
+		"effective": "Pegasus",
+		"okugiSpeed": -1
+	},
+	"Parthia": {
+		"might": 14,
+		"range": 2,
+		"color": "grey",
+		"type": "Bow",
+		"effective": "Pegasus",
+		"special": "Parthia"
+	},
+	"Silver Bow+": {
+		"might": 13,
+		"range": 2,
+		"color": "grey",
+		"type": "Bow",
+		"effective": "Pegasus"
+	},
+	"Deathly Dagger": {
+		"might": 11,
+		"range": 2,
+		"color": "grey",
+		"type": "Dagger",
+		"special": "Deathly Dagger"
+	},
+	"Poison Dagger+": {
+		"might": 5,
+		"range": 2,
+		"color": "grey",
+		"type": "Dagger",
+		"special": "Poison Dagger",
+		"effective": "Infantry"
+	},
+	"Rogue Dagger+": {
+		"might": 7,
+		"range": 2,
+		"color": "grey",
+		"type": "Dagger",
+		"special": "Rogue Dagger"
+	},
+	"Silver Dagger+": {
+		"might": 10,
+		"range": 2,
+		"color": "grey",
+		"type": "Dagger",
+		"special": "Silver Dagger"
+	},
+	"Smoke Dagger+": {
+		"might": 9,
+		"range": 2,
+		"color": "grey",
+		"type": "Dagger",
+		"special": "Smoke Dagger"
 	}
-
 }

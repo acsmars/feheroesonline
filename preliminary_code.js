@@ -7,26 +7,28 @@ Unadded Passives:
 
 A: None
 B: Obstruct, Brash Assault, Live to Serve, Renewal (figure out how Obstruct works)
-C: Fortify Dragons
+C: None
 
 Unadded Weapons:
-(Lots)
+(None)
 
 Red Sword: None
 Red Tome:  None
 Red Breath: None
-Green Axe: ???
-Green Tome:  ???
-Green Breath: ???
-Blue Spear: ???
-Blue Tome:  ???
-Blue Breath: ???
-Staves: ???
-Daggers:  ???
-Bow: ???
+Green Axe: None
+Green Tome:  None
+Green Breath: None
+Blue Spear: None
+Blue Tome:  None
+Blue Breath: None
+Staves: None
+Daggers:  None
+Bow: None
 
 Unadded Okugi:
-(Lots)
+All the Balms
+All the Rising/Growing/Blazing variants
+Galeforce
 
 */
 
@@ -296,7 +298,7 @@ function Controller(sender, server) {
 			this.lastClick = [];
 			this.attacking = false;
 			this.assisting = false;
-			myself(pos);
+			myself(pos); //while unselecting, automatically try to reselect
 		}
 		
 		if (this.waiting) {
@@ -891,7 +893,7 @@ function Movement() {
 			};
 			for (var a in moveOptions) {
 				var target = moveOptions[a];
-				var hasPass = passive.hasPass(tactician.units[unitIndex]);
+				var hasPass = (passive.hasPass(tactician.units[unitIndex]) || weapon.hasPass(tactician.units[unitIndex]));
 				var moveType = movement.checkAccess(target, type, postSteps, team, hasPass);
 				if (moveType === "PASS") {
 					markPassable(target);
@@ -915,7 +917,13 @@ function Movement() {
 		
 		moveAround(location, moveCount); //Searches for other locations to be a valid place for it to end its turn
 		
-		var friendlyTeleports = passive.teleports(tactician.units[unitIndex]), i = 0, teleportTo;
+		var friendlyTeleports = passive.teleports(tactician.units[unitIndex]), weaponTeleports = []; i = 0, teleportTo;
+		
+		weaponTeleports = weapon.teleports(tactician.units[unitIndex]);
+		
+		for (var a in weaponTeleports) {
+			friendlyTeleports.push(weaponTeleports[a]);
+		};
 		
 		if (friendlyTeleports.length > 0) {
 			for (var t in friendlyTeleports) {
@@ -1055,6 +1063,16 @@ function Combat() {
 			defenderDoubles = true; //no idea what happens if they break each other
 		}
 		
+		if (weapon.breaker(user, target)) {
+			attackerDoubles = true;
+			defenderDoubles = false;
+		}		
+		
+		if (weapon.breaker(target, user)) {
+			attackerDoubles = false;
+			defenderDoubles = true; //no idea what happens if they break each other
+		}
+		
 		if (passive.riposte(target)) {
 			defenderDoubles = true;
 		}
@@ -1173,6 +1191,8 @@ function Combat() {
 				this.heal(target, Math.floor(dmg * this.okugiData.heal));
 			}
 			
+			weapon.absorb(A, dmg);
+			
 			this.checkDead(target);
 			return;
 		}
@@ -1205,9 +1225,46 @@ function Combat() {
 		switch (kind) {
 			case "offensive":
 				switch (unit.okugi.action) {
+					case "Aether":
+						resetOkugi(unit);
+						this.okugiData.divide = 0.5;
+						this.okugiData.heal = 0.5;
+						break;
 					case "Astra":
 						resetOkugi(unit);
 						this.okugiData.multiply = 2.5;
+						break;
+					case "Bonfire":
+						resetOkugi(unit);
+						this.okugiData.add = (unit.def * 0.5);
+						break;
+					case "Ignis":
+						resetOkugi(unit);
+						this.okugiData.add = (unit.def * 0.8);
+						break;
+					case "Draconic Aura":
+						resetOkugi(unit);
+						this.okugiData.boost = 1.3;
+						break;
+					case "Dragon Fang":
+						resetOkugi(unit);
+						this.okugiData.boost = 1.5;
+						break;
+					case "Dragon Gaze":
+						resetOkugi(unit);
+						this.okugiData.boost = 1.3;
+						break;
+					case "Glacies":
+						resetOkugi(unit);
+						this.okugiData.add = (unit.res * 0.8);
+						break;
+					case "Iceberg":
+						resetOkugi(unit);
+						this.okugiData.add = (unit.res * 0.5);
+						break;
+					case "Glimmer":
+						resetOkugi(unit);
+						this.okugiData.multiply = 1.5;
 						break;
 					case "Night Sky":
 						resetOkugi(unit);
@@ -1221,9 +1278,16 @@ function Combat() {
 						resetOkugi(unit);
 						this.okugiData.divide = 0.5;
 						break;
-					case "Aether":
+					case "Moonbow":
 						resetOkugi(unit);
-						this.okugiData.divide = 0.5;
+						this.okugiData.divide = 0.3;
+						break;
+					case "Noontime":
+						resetOkugi(unit);
+						this.okugiData.heal = 0.3;
+						break;
+					case "Sol":
+						resetOkugi(unit);
 						this.okugiData.heal = 0.5;
 						break;
 					case "Retribution":
@@ -1238,10 +1302,40 @@ function Combat() {
 				}
 			case "defensive":
 				switch (unit.okugi.action) {
+					case "Buckler":
+						if (range === 1) {
+							resetOkugi(unit);
+							this.okugiData.reduce = 0.3;
+							break;
+						}
+					case "Escutcheon":
+						if (range === 1) {
+							resetOkugi(unit);
+							this.okugiData.reduce = 0.3;
+							break;
+						}
 					case "Pavise":
 						if (range === 1) {
 							resetOkugi(unit);
 							this.okugiData.reduce = 0.5;
+							break;
+						}
+					case "Aegis":
+						if (range === 2) {
+							resetOkugi(unit);
+							this.okugiData.reduce = 0.5;
+							break;
+						}
+					case "Holy Vestments":
+						if (range === 2) {
+							resetOkugi(unit);
+							this.okugiData.reduce = 0.3;
+							break;
+						}
+					case "Sacred Cowl":
+						if (range === 2) {
+							resetOkugi(unit);
+							this.okugiData.reduce = 0.3;
 							break;
 						}
 					case "Miracle":
@@ -1250,6 +1344,15 @@ function Combat() {
 							this.okugiData.mustSurvive = true;
 							break;
 						}
+				}
+			case "healing":
+				switch (unit.okugi.action) {
+					case "Imbue":
+						assist.boostHeal = 10;
+						break;
+					case "Heavenly Light":
+						assist.healOther = 10;
+						break;
 				}
 		}
 	}
@@ -1295,9 +1398,11 @@ function Weapon() {
 	
 	this.beatsGrey = function(special) {
 		switch (special) {
-			case "Rauorraven":  
+			case "Rauorraven": 
+			case "Gronnraven":  
+			case "Blarraven":  
 				return true;
-				break;
+				break; 
 		}
 		return false;
 	};
@@ -1323,6 +1428,16 @@ function Weapon() {
 			case "Brave": 
 				return true;
 				break;
+		}
+		return false;
+	};
+	
+	this.breaker = function(unit, enemy) {
+		switch (unit.weapon.special) {
+			case "Assassin's Bow":
+				if (target.weapon.type === "Dagger") {
+					return true;
+				}
 		}
 		return false;
 	};
@@ -1355,6 +1470,9 @@ function Weapon() {
 				break;
 			case "Yato": 
 				bonuses.spd += 4;
+				break;
+			case "Parthia": 
+				bonuses.res += 4;
 				break;
 		}
 		return bonuses;
@@ -1389,6 +1507,8 @@ function Weapon() {
 				}
 				break;
 			case "Rauorblade":  
+			case "Gronnblade":  
+			case "Blarblade":  
 				return (unit.atk.change + unit.def.change + unit.res.change + unit.spd.change);
 				break;
 		}
@@ -1403,6 +1523,13 @@ function Weapon() {
 				break;
 		}
 		return;
+	};
+	
+	this.hasPass = function(unit) {
+		if ((unit.weapon.special === "Fujin Yumi") && (getHPPercentage(unit) >= 0.5)) {
+			return true;
+		}
+		return false;
 	};
 	
 	this.initiateTurn = function(special, unit) {
@@ -1427,7 +1554,29 @@ function Weapon() {
 		return;
 	};
 	
-	this.afterCombat = function(unit, target, initiated) {
+	this.teleports = function(unit) {
+		var out = [], u;
+		var percentage = getHPPercentage(unit);
+		if ((unit.weapon.special === "Noatun") && (percentage <= 0.4)) {
+			for (var a in tactician.units) {
+				u = tactician.units[a];
+				if (u.team !== unit.team) continue;
+				out.push(u.pos);
+			}
+		}
+		return out;
+	};
+	
+	this.absorb = function(unit, dealt) {	
+		switch (unit.weapon.special) {
+			case "Absorb":
+				combat.heal(unit, Math.floor(dealt/2));
+				break;
+		}
+		return;
+	};
+	
+	this.afterCombat = function(unit, target, initiated, dealt) {
 		//weapons whose abilities take effect after combat happens.
 		var percentage = getHPPercentage(unit);
 		
@@ -1436,15 +1585,60 @@ function Weapon() {
 				case "Cymbeline": 
 					tactician.AOEStatChange(unit, unit.pos, unit.team, "atk", 4, "team", 1, "Any");
 					break;
-				case "Gravity": 
-					target.movement.change = 1;
-					target.movement.end = unit.team;
+				case "Aura": 
+					tactician.AOEHeal(unit, unit.pos, unit.team, 5, 1);
 					break;
 				case "Dark Breath":
 					tactician.AOEStatChange(unit, target.pos, unit.team, "atk", -5, "enemies", 2, "Any");
 					tactician.AOEStatChange(unit, target.pos, unit.team, "spd", -5, "enemies", 2, "Any");
 					break;
+				case "Light Breath":
+					tactician.AOEStatChange(unit, unit.pos, unit.team, "def", 4, "team", 1, "Any");
+					tactician.AOEStatChange(unit, unit.pos, unit.team, "res", 4, "team", 1, "Any");
+					break;
+				case "Gravity": 
+					target.movement.change = 1;
+					target.movement.end = unit.team;
+					break;
+				case "Pain":
+					tactician.setBoost(target, "atk", -6, unit.team);
+					break;
+				case "Panic":
+					tactician.flipBoosts(target, -1);
+					break;
+				case "Slow":
+					tactician.setBoost(target, "spd", -6, unit.team);
+					break;
+				case "Deathly Dagger":
+					combat.damage(target, 7, 1);
+					break;
 			}
+		}
+		switch (unit.weapon.special) {
+			case "Deathly Dagger":
+				tactician.setBoost(target, "def", -7, unit.team);
+				tactician.setBoost(target, "res", -7, unit.team);
+				break;
+			case "Poison Dagger":
+				if (target.technicalTypes.indexOf("Infantry") !== -1) {
+					tactician.setBoost(target, "def", -6, unit.team);
+					tactician.setBoost(target, "res", -6, unit.team);
+				}
+				break;
+			case "Rogue Dagger":
+				tactician.setBoost(target, "def", -5, unit.team);
+				tactician.setBoost(target, "res", -5, unit.team);
+				tactician.setBoost(unit, "def", 5, unit.team);
+				tactician.setBoost(unit, "res", 5, unit.team);
+				break;
+			case "Silver Dagger":
+				tactician.setBoost(target, "def", -7, unit.team);
+				tactician.setBoost(target, "res", -7, unit.team);
+				break;
+			case "Smoke Dagger":
+				tactician.AOEStatChange(unit, target.pos, unit.team, "def", -6, "enemies", 2, "Any");
+				tactician.AOEStatChange(unit, target.pos, unit.team, "res", -6, "enemies", 2, "Any");
+				break;
 		}
 		return;
 	};
@@ -1559,6 +1753,10 @@ function Passives() {
 			case "Fortify Cavalry":
 				tactician.AOEStatChange(unit, unit.pos, unit.team, "def", 6, "team", 1, "Cavalry");
 				tactician.AOEStatChange(unit, unit.pos, unit.team, "res", 6, "team", 1, "Cavalry");
+				break;
+			case "Fortify Dragons":
+				tactician.AOEStatChange(unit, unit.pos, unit.team, "def", 6, "team", 1, "Dragon");
+				tactician.AOEStatChange(unit, unit.pos, unit.team, "res", 6, "team", 1, "Dragon");
 				break;
 			case "Fortify Fliers":
 				tactician.AOEStatChange(unit, unit.pos, unit.team, "def", 6, "team", 1, "Pegasus");
@@ -1710,7 +1908,7 @@ function Passives() {
 		return;
 	};
 	
-	this.friendlyTeleports = function(unit) {
+	this.teleports = function(unit) {
 		var out = [], u;
 		if (unit.passive_B === "Wings of Mercy") {
 			for (var a in tactician.units) {
@@ -1848,7 +2046,7 @@ function Assists() {
 	assist = this;
 	
 	this.useAssist = function(user, target, useFrom) {
-		var act = user.assist, val = 0;
+		var act = user.assist, val = 0, healed = false;
 		
 		switch (act) {
 			case "Dance":
@@ -1857,26 +2055,34 @@ function Assists() {
 			case "Ardent Sacrifice":
 				combat.heal(target, 10);
 				combat.damage(user, 10, 1);
+				healed = true;
 			case "Heal":
 				combat.heal(target, 5);
+				healed = true;
 			case "Martyr":
 				val = (7 + user.hp.max - user.hp.remaining);
 				combat.heal(target, val);
 				val = Math.floor((user.hp.max - user.hp.remaining)/2);
 				combat.heal(user, val);
+				healed = true;
 			case "Mend":
 				combat.heal(target, 10);
+				healed = true;
 			case "Physic":
 				combat.heal(target, 8);
+				healed = true;
 			case "Reconcile":
 				val = user.hp.remaining;
 				user.hp.remaining = Math.floor(user.hp.max, target.hp.remaining);
 				target.hp.remaining = Math.floor(target.hp.max, val);
+				healed = true;
 			case "Recover":
 				combat.heal(target, 15);
+				healed = true;
 			case "Rehabilitate":
 				combat.heal(target, 7);
 				combat.heal(user, 7);
+				healed = true;
 			case "Swap":
 				var wasAt = user.pos;
 				controller.move(user, target.pos);
@@ -1962,6 +2168,20 @@ function Assists() {
 				tactician.flipBoosts(target, 1);
 				break;
 				
+		}
+		if (healed) {
+			this.healOthers = 0;
+			this.healExtra = 0;
+			combat.tryOkugi(unit, "healing", -1);
+			if (this.healExtra > 0) {
+				combat.heal(target, this.healExtra);
+			}
+			if (this.healOthers > 0) {
+				for (var a in tactician.units) {
+					if (tactician.units[a].team !== unit.team) continue;
+					combat.heal(tactician.units[a], this.healExtra);
+				}
+			}
 		}
 	};
 	
